@@ -32,6 +32,6 @@ adapters:
     host: "localhost"
     port: 5432
     database: "users"
-    schema: "public"
-    username: "userr"
+    schema: ""
+    username: "postgres"
     password: "1234"

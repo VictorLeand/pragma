@@ -19,11 +19,15 @@ public class UserEntity {
     @Id
     @Column("user_id")
     private Long id;
+    @NonNull
     private String nombres;
+    @NonNull
     private String apellidos;
     private LocalDate fechaNacimiento;
     private String direccion;
     private String telefono;
+    @NonNull
     private String correoElectronico;
+    @NonNull
     private BigDecimal salarioBase;
 }

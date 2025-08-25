@@ -1,5 +1,6 @@
 package co.com.pragma1.r2dbc.entity;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -19,15 +20,21 @@ public class UserEntity {
     @Id
     @Column("user_id")
     private Long id;
-    @NonNull
+
     private String nombres;
-    @NonNull
+
     private String apellidos;
+
+    @Column("fecha_nacimiento")
     private LocalDate fechaNacimiento;
+
     private String direccion;
     private String telefono;
-    @NonNull
+
+    @Column("correo_electronico")
     private String correoElectronico;
-    @NonNull
+
+    @Column("salario_base")
     private BigDecimal salarioBase;
+
 }

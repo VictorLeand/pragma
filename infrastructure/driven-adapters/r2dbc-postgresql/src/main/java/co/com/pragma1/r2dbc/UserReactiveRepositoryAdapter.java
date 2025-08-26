@@ -7,6 +7,7 @@ import co.com.pragma1.r2dbc.helper.ReactiveAdapterOperations;
 import lombok.extern.slf4j.Slf4j;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -16,9 +17,16 @@ public class UserReactiveRepositoryAdapter extends ReactiveAdapterOperations<
         UserEntity,
         Long,
         UserReactiveRepository
+
 > implements UserRepository {
-    public UserReactiveRepositoryAdapter(UserReactiveRepository repository, ObjectMapper mapper) {
+
+    private final TransactionalOperator transactionalOperator;
+
+    public UserReactiveRepositoryAdapter(UserReactiveRepository repository, ObjectMapper mapper,
+                                         TransactionalOperator transactionalOperator) {
         super(repository, mapper, entity -> mapper.map(entity, User.class));
+
+        this.transactionalOperator = transactionalOperator;
     }
 
     @Override
@@ -26,14 +34,22 @@ public class UserReactiveRepositoryAdapter extends ReactiveAdapterOperations<
         return Mono.just(user)
                 .doOnNext(usuario -> log.info("Iniciando guardado de usuario : {}" , usuario))
                 .flatMap(super::save)
+                .as(transactionalOperator::transactional)
                 .doOnNext(usuario -> log.info("Usuario guardado : {}" , usuario));
     }
 
     @Override
-    public Mono<Boolean> existsByCorreoElectronico(String correoElectronico) {
-        log.info("Verificando existencia de correo: {}", correoElectronico);
-        return repository.existsByCorreoElectronico(correoElectronico)
-                .doOnNext(exists -> log.info("¿El correo existe? {} = {}", correoElectronico, exists));
+    public Mono<Boolean> existsByDocumento(String documento) {
+        log.info("Verificando existencia de documento: {}", documento);
+        return repository.existsByDocumento(documento)
+                .doOnNext(exists -> log.info("¿El documento existe? {} = {}", documento, exists));
+    }
+
+    @Override
+    public Mono<Boolean> existsByEmail(String email) {
+        log.info("Verificando existencia de correo: {}", email);
+        return repository.existsByEmail(email)
+                .doOnNext(exists -> log.info("¿El correo existe? {} = {}", email, exists));
     }
 
 }

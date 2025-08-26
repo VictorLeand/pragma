@@ -1,6 +1,7 @@
 package co.com.pragma1.r2dbc.entity;
 
-import jakarta.validation.constraints.*;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -18,12 +19,16 @@ import java.time.LocalDate;
 public class UserEntity {
 
     @Id
-    @Column("user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column("id_user")
     private Long id;
 
-    private String nombres;
+    private String nombre;
 
-    private String apellidos;
+    private String apellido;
+
+    @Column("documento_identidad")
+    private String documento;
 
     @Column("fecha_nacimiento")
     private LocalDate fechaNacimiento;
@@ -32,7 +37,7 @@ public class UserEntity {
     private String telefono;
 
     @Column("correo_electronico")
-    private String correoElectronico;
+    private String email;
 
     @Column("salario_base")
     private BigDecimal salarioBase;
